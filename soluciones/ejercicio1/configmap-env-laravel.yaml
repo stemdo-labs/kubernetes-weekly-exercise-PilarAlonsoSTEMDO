@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: laravel-env
+  namespace: laravel
+data:
+  LARAVEL_PORT_NUMBER: "80"
+  LARAVEL_SKIP_COMPOSER_UPDATE: "no"
+  LARAVEL_SKIP_DATABASE: "no"
+  LARAVEL_DATABASE_TYPE: "postgres"
+  LARAVEL_DATABASE_HOST: "postgres-svc"
+  LARAVEL_DATABASE_PORT_NUMBER: "5432"
+  LARAVEL_DATABASE_NAME: "mibbdd"
+  ALLOW_EMPTY_PASSWORD: "yes"
+  POSTGRESQL_ALLOW_REMOTE_CONNECTIONS: "yes"
+  

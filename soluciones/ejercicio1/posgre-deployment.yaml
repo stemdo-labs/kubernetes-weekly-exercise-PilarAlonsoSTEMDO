@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+  namespace: laravel
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres-db
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: postgres-db
+    spec:
+      containers:
+      - name: postgres
+        image: bitnami/postgresql:16.3.0-debian-12-r6
+        env:
+        - name: POSTGRESQL_DATABASE
+          valueFrom:
+            configMapKeyRef:
+              name: laravel-env
+              key: LARAVEL_DATABASE_NAME
+        - name: ALLOW_EMPTY_PASSWORD
+          value: "no"
+        - name: POSTGRESQL_PORT_NUMBER
+          valueFrom:
+            configMapKeyRef:
+              name: laravel-env
+              key: LARAVEL_DATABASE_PORT_NUMBER
+        - name: POSTGRESQL_ALLOW_REMOTE_CONNECTIONS
+          value: "yes"
+        - name: POSTGRESQL_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: db-credentials
+              key: DB_USERNAME
+        - name: POSTGRESQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: db-credentials
+              key: DB_PASSWORD
+        ports:
+        - containerPort: 5432
