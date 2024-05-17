@@ -20,31 +20,24 @@ spec:
     spec:
       containers:
       - name: postgres
-        image: bitnami/postgresql:16.3.0-debian-12-r6
+        image: bitnami/mariadb:11.2.4
         env:
-        - name: POSTGRESQL_DATABASE
+        - name: MARIADB_DATABASE
           valueFrom:
             configMapKeyRef:
               name: laravel-env
               key: LARAVEL_DATABASE_NAME
-        - name: ALLOW_EMPTY_PASSWORD
-          value: "no"
-        - name: POSTGRESQL_PORT_NUMBER
-          valueFrom:
-            configMapKeyRef:
-              name: laravel-env
-              key: LARAVEL_DATABASE_PORT_NUMBER
-        - name: POSTGRESQL_ALLOW_REMOTE_CONNECTIONS
-          value: "yes"
-        - name: POSTGRESQL_USERNAME
+        - name: MARIADB_USER
           valueFrom:
             secretKeyRef:
               name: db-credentials
               key: DB_USERNAME
-        - name: POSTGRESQL_PASSWORD
+        - name: MARIADB_PASSWORD
           valueFrom:
             secretKeyRef:
               name: db-credentials
               key: DB_PASSWORD
+        - name: ALLOW_EMPTY_PASSWORD
+          value: "yes"
         ports:
-        - containerPort: 5432
+        - containerPort: 3306
