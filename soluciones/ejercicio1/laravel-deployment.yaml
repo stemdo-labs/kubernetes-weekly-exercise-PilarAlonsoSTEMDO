@@ -24,11 +24,7 @@ spec:
             configMapKeyRef:
               name: laravel-env
               key: LARAVEL_PORT_NUMBER
-        - name: LARAVEL_SKIP_COMPOSER_UPDATE
-          valueFrom:
-            configMapKeyRef:
-              name: laravel-env
-              key: LARAVEL_SKIP_COMPOSER_UPDATE
+        
         - name: LARAVEL_SKIP_DATABASE
           valueFrom:
             configMapKeyRef:
