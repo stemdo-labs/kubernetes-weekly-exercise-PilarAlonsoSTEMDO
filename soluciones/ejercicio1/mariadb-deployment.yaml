@@ -1,13 +1,13 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: postgres
+  name: mariadb-deploy
   namespace: laravel
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: postgres-db
+      app: mariadb-app
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -16,10 +16,10 @@ spec:
   template:
     metadata:
       labels:
-        app: postgres-db
+        app: mariadb-app
     spec:
       containers:
-      - name: postgres
+      - name: mariadb-app
         image: mariadb:11.4.1-rc
         env:
         - name: MARIADB_DATABASE
@@ -29,19 +29,19 @@ spec:
               key: LARAVEL_DATABASE_NAME
         - name: MARIADB_USER
           valueFrom:
-            secretKeyRef:
-              name: db-credentials
-              key: DB_USERNAME
+            configMapKeyRef:
+              name: laravel-env
+              key: LARAVEL_DATABASE_USER
         - name: MARIADB_PASSWORD
           valueFrom:
             secretKeyRef:
               name: db-credentials
-              key: DB_PASSWORD
+              key: DB_DATABASE_PASSWORD
 
         - name: MARIADB_ROOT_PASSWORD
           valueFrom:
             secretKeyRef:
               name: db-credentials
-              key: DB_PASSWORD
+              key: DB_ROOT_PASSWORD
         ports:
         - containerPort: 3306

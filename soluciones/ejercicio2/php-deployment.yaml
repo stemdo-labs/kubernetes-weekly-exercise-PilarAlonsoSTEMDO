@@ -1,0 +1,46 @@
+apiVersion: apps/v1 
+kind: Deployment
+metadata:
+  name: php-deply
+  namespace: phpmyadmin
+spec:
+  selector:  
+    matchLabels:
+      app: php
+  replicas: 1
+  template:  
+    metadata:
+      labels:
+        app: php
+    spec:
+      containers:
+      - name: php
+        image: phpmyadmin:5.2.1
+        ports:
+        - containerPort: 80
+        env:
+          - name: PMA_HOST
+            valueFrom:
+              configMapKeyRef:
+                name: php-configmap
+                key: DB_DATABASE_HOST
+          - name: PMA_PORT
+            valueFrom:
+              configMapKeyRef:
+                name: php-configmap
+                key: DB_DATABASE_PORT_NUMBER
+          - name: PMA_USER
+            valueFrom:
+              configMapKeyRef:
+                name: php-configmap
+                key: DB_DATABASE_USER
+          - name: MYSQL_ROOT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: php-credentials
+                key: DB_ROOT_PASSWORD
+          - name: PMA_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: php-credentials
+                key: DB_DATABASE_PASSWORD
