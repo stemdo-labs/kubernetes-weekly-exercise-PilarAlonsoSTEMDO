@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: laravel
+  namespace: laravel
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: laravel
+  template:
+    metadata:
+      labels:
+        app: laravel
+    spec:
+      containers:
+      - name: laravel
+        image: bitnami/laravel:11.0.8
+        ports:
+        - containerPort: 8000
+        env:
+        - name: LARAVEL_PORT_NUMBER
+          valueFrom:
+            configMapKeyRef:
+              name: laravel-env
+              key: LARAVEL_PORT_NUMBER
+        
+        - name: LARAVEL_SKIP_DATABASE
+          valueFrom:
+            configMapKeyRef:
+              name: laravel-env
+              key: LARAVEL_SKIP_DATABASE
+        - name: LARAVEL_DATABASE_TYPE
+          valueFrom:
+            configMapKeyRef:
+              name: laravel-env
+              key: LARAVEL_DATABASE_TYPE
+        - name: LARAVEL_DATABASE_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: laravel-env
+              key: LARAVEL_DATABASE_HOST
+        - name: LARAVEL_DATABASE_PORT_NUMBER
+          valueFrom:
+            configMapKeyRef:
+              name: laravel-env
+              key: LARAVEL_DATABASE_PORT_NUMBER
+        - name: LARAVEL_DATABASE_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: laravel-env
+              key: LARAVEL_DATABASE_NAME
+        - name: LARAVEL_DATABASE_USER
+          valueFrom:
+            secretKeyRef:
+              name: db-credentials
+              key: DB_USERNAME
+        - name: LARAVEL_DATABASE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: db-credentials
+              key: DB_PASSWORD
+        resources:
+          limits:
+            cpu: "600m"
+            memory: "512Mi"
+          requests:
+            cpu: "200m"
+            memory: "256Mi"
+
