@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: postgres
-        image: bitnami/mariadb:11.2.4
+        image: mariadb:11.4.1-rc
         env:
         - name: MARIADB_DATABASE
           valueFrom:
@@ -37,7 +37,11 @@ spec:
             secretKeyRef:
               name: db-credentials
               key: DB_PASSWORD
-        - name: ALLOW_EMPTY_PASSWORD
-          value: "yes"
+
+        - name: MARIADB_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: db-credentials
+              key: DB_PASSWORD
         ports:
         - containerPort: 3306

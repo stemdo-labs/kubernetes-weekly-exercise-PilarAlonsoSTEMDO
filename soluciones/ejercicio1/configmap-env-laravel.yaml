@@ -4,7 +4,7 @@ metadata:
   name: laravel-env
   namespace: laravel
 data:
-  LARAVEL_PORT_NUMBER: "80"
+  LARAVEL_PORT_NUMBER: "8000"
   LARAVEL_SKIP_COMPOSER_UPDATE: "no"
   LARAVEL_SKIP_DATABASE: "no"
   LARAVEL_DATABASE_TYPE: "mysql"
